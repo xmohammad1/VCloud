@@ -68,10 +68,10 @@ restart_service() {
 }
 
 remove_vpncloud() {
-  sudo service vpncloud@configdefault stop || { echo "Failed to stop VPNCloud service"; exit 1; }
-  sudo systemctl disable vpncloud@configdefault || { echo "Failed to disable VPNCloud service"; exit 1; }
-  sudo apt-get remove --purge -y vpncloud || { echo "Failed to remove VPNCloud"; exit 1; }
-  sudo rm -rf /etc/vpncloud || { echo "Failed to remove VPNCloud configuration files"; exit 1; }
+  sudo service vpncloud@configdefault stop
+  sudo systemctl disable vpncloud@configdefault
+  sudo apt-get remove --purge -y vpncloud
+  sudo rm -rf /etc/vpncloud
   echo "VPNCloud removed completely."
 }
 
