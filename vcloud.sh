@@ -15,7 +15,7 @@ setup_vpncloud() {
     sudo sed -i "/^peers:/a\  - \"$remote_ip\"" "$CONFIG_FILE" || { echo "Failed to add peer"; exit 1; }
     restart_service
   else
-    read -p "Private IP e.g 10.0.50.1 : " private_ip
+    read -p "Private IP e.g 10.0.50.1: " private_ip
     sudo tee "$CONFIG_FILE" > /dev/null << EOF
 ---
 device:
@@ -27,7 +27,7 @@ ip: $private_ip
 ifup: ~
 ifdown: ~
 crypto:
-  password: "99waq9szss"
+  password: "12345"
   private-key: ~
   public-key: ~
   trusted-keys: []
