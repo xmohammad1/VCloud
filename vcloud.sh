@@ -58,8 +58,8 @@ hook: ~
 hooks: {}
 EOF
   fi
-  sudo service vpncloud@configdefault start || { echo "Failed to start VPNCloud service"; exit 1; }
-  sudo systemctl enable vpncloud@configdefault || { echo "Failed to enable VPNCloud service"; exit 1; }
+  sudo service vpncloud@configdefault start
+  sudo systemctl enable vpncloud@configdefault
   echo "VPNCloud configuration file created at /etc/vpncloud/configdefault.net"
 }
 
