@@ -24,6 +24,8 @@ device:
   path: ~
   fix-rp-filter: false
 ip: $private_ip
+ifup: ~
+ifdown: ~
 crypto:
   password: "99waq9szss"
   private-key: ~
