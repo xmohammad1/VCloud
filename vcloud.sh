@@ -15,13 +15,12 @@ setup_vpncloud() {
     sudo sed -i "/^peers:/a\  - \"$remote_ip\"" "$CONFIG_FILE" || { echo "Failed to add peer"; exit 1; }
     restart_service
   else
-    read -p "Private IP e.g 10.0.50.1: " private_ip
+    read -p "Private IP e.g 10.0.50.1 : " private_ip
     port=3210
     max_attempts=5
     while [ $max_attempts -gt 0 ]; do
         ss -tuln | grep -q ":$port "
         if [ $? -ne 0 ]; then
-            echo $port
             exit 0
         fi
         port=$((port + 1))
