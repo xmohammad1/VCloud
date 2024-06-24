@@ -12,7 +12,7 @@ Install_vpncloud() {
 setup_vpncloud() {
   read -p "Node Public IP: " remote_ip
   if [ -f "$CONFIG_FILE" ]; then
-    sudo sed -i "/^peers:/a\  - \"$remote_ip\"" "$CONFIG_FILE" || { echo "Failed to add peer"; exit 1; }
+    sudo sed -i "/^peers:/a\  - $remote_ip" "$CONFIG_FILE"
     restart_service
   else
     read -p "Private IP e.g 10.0.50.1 : " private_ip
@@ -64,7 +64,7 @@ hooks: {}
 EOF
         sudo service vpncloud@configdefault start
         sudo systemctl enable vpncloud@configdefault
-        echo "VPNCloud configuration file created at $CONFIG_FILE"
+        echo "VPNCloud configuration file created at $CONFIG_FILE with port $port"
         return 0
       fi
       port=$((port + 1))
