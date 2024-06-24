@@ -4,9 +4,9 @@ CONFIG_FILE="/etc/vpncloud/configdefault.net"
 
 Install_vpncloud() {
   echo "deb https://repo.ddswd.de/deb stable main" | sudo tee /etc/apt/sources.list.d/vpncloud.list
-  wget https://repo.ddswd.de/deb/public.key -qO - | sudo tee /etc/apt/trusted.gpg.d/vpncloud.asc
+  wget https://repo.ddswd.de/deb/public.key -qO - | sudo apt-key add
   sudo apt update
-  sudo apt install -y vpncloud || { echo "VPNCloud installation failed"; exit 1; }
+  sudo apt install vpncloud
 }
 
 setup_vpncloud() {
