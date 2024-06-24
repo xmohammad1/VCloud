@@ -19,14 +19,9 @@ setup_vpncloud() {
     port=3210
     max_attempts=5
     while [ $max_attempts -gt 0 ]; do
-        ss -tuln | grep -q ":$port "
-        if [ $? -ne 0 ]; then
-            exit 0
-        fi
-        port=$((port + 1))
-        max_attempts=$((max_attempts - 1))
-    done
-    sudo tee "$CONFIG_FILE" > /dev/null << EOF
+      ss -tuln | grep -q ":$port "
+      if [ $? -ne 0 ]; then
+        sudo tee "$CONFIG_FILE" > /dev/null << EOF
 ---
 device:
   type: tun
@@ -67,10 +62,17 @@ group: ~
 hook: ~
 hooks: {}
 EOF
+        sudo service vpncloud@configdefault start
+        sudo systemctl enable vpncloud@configdefault
+        echo "VPNCloud configuration file created at $CONFIG_FILE with port $port"
+        return 0
+      fi
+      port=$((port + 1))
+      max_attempts=$((max_attempts - 1))
+    done
+    echo "No available ports found after $max_attempts attempts."
+    return 1
   fi
-  sudo service vpncloud@configdefault start
-  sudo systemctl enable vpncloud@configdefault
-  echo "VPNCloud configuration file created at /etc/vpncloud/configdefault.net"
 }
 
 restart_service() {
