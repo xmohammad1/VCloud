@@ -16,6 +16,17 @@ setup_vpncloud() {
     restart_service
   else
     read -p "Private IP e.g 10.0.50.1: " private_ip
+    port=3210
+    max_attempts=5
+    while [ $max_attempts -gt 0 ]; do
+        ss -tuln | grep -q ":$port "
+        if [ $? -ne 0 ]; then
+            echo $port
+            exit 0
+        fi
+        port=$((port + 1))
+        max_attempts=$((max_attempts - 1))
+    done
     sudo tee "$CONFIG_FILE" > /dev/null << EOF
 ---
 device:
@@ -32,7 +43,7 @@ crypto:
   public-key: ~
   trusted-keys: []
   algorithms: []
-listen: "3210"
+listen: "$port"
 peers:
   - $remote_ip
 peer-timeout: 300
