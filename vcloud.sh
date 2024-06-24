@@ -12,7 +12,7 @@ Install_vpncloud() {
 setup_vpncloud() {
   read -p "Node Public IP: " remote_ip
   if [ -f "$CONFIG_FILE" ]; then
-    sudo sed -i "/^peers:/a\  - $remote_ip" "$CONFIG_FILE"
+    sudo sed -i "/^peers:/a\\  - $remote_ip" "$CONFIG_FILE"
     restart_service
   else
     read -p "Private IP e.g 10.0.50.1 : " private_ip
