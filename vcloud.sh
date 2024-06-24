@@ -64,7 +64,7 @@ hooks: {}
 EOF
         sudo service vpncloud@configdefault start
         sudo systemctl enable vpncloud@configdefault
-        echo "VPNCloud configuration file created at $CONFIG_FILE with port $port"
+        echo "VPNCloud configuration file created at $CONFIG_FILE"
         return 0
       fi
       port=$((port + 1))
