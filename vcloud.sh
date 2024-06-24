@@ -58,9 +58,9 @@ group: ~
 hook: ~
 hooks: {}
 EOF
-        sudo service vpncloud@configdefault start
-        sudo systemctl enable vpncloud@configdefault
-        echo "VPNCloud configuration file created at $CONFIG_FILE"
+      sudo service vpncloud@configdefault start
+      sudo systemctl enable vpncloud@configdefault
+      echo "VPNCloud configuration file created at $CONFIG_FILE"
   fi
 }
 
