@@ -16,7 +16,6 @@ setup_vpncloud() {
     restart_service
   else
     read -p "Private IP e.g 10.0.50.1 : " private_ip
-    port=3211
     sudo tee "$CONFIG_FILE" > /dev/null << EOF
 ---
 device:
@@ -33,7 +32,7 @@ crypto:
   public-key: ~
   trusted-keys: []
   algorithms: []
-listen: "$port"
+listen: "3210"
 peers:
   - $remote_ip
 peer-timeout: 300
