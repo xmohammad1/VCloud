@@ -1,6 +1,6 @@
 #!/bin/bash
 
-CONFIG_FILE="/etc/vpncloud/configdefault.net"
+CONFIG_FILE="/etc/vpncloud/expert.net"
 
 Install_vpncloud() {
   echo "deb https://repo.ddswd.de/deb stable main" | sudo tee /etc/apt/sources.list.d/vpncloud.list
@@ -15,7 +15,7 @@ setup_vpncloud() {
     sudo sed -i "/^peers:/a\\  - $remote_ip" "$CONFIG_FILE"
     restart_service
   else
-    read -p "Private IP e.g 10.0.50.1 : " private_ip
+    read -p "Private IP e.g 10.0.50.x : " private_ip
     sudo tee "$CONFIG_FILE" > /dev/null << EOF
 ---
 device:
@@ -35,8 +35,8 @@ crypto:
 listen: "3210"
 peers:
   - $remote_ip
-peer-timeout: 300
-keepalive: ~
+peer-timeout: 5
+keepalive: 2
 beacon:
   store: ~
   load: ~
@@ -57,22 +57,25 @@ group: ~
 hook: ~
 hooks: {}
 EOF
-      sudo service vpncloud@configdefault start
-      sudo systemctl enable vpncloud@configdefault
+      sudo service vpncloud@expert start
+      sudo systemctl enable vpncloud@expert
       echo "VPNCloud configuration file created at $CONFIG_FILE"
   fi
 }
 
 restart_service() {
-  sudo service vpncloud@configdefault restart || { echo "Failed to restart VPNCloud service"; exit 1; }
+  sudo service vpncloud@expert restart
 }
 
 remove_vpncloud() {
-  sudo service vpncloud@configdefault stop
-  sudo systemctl disable vpncloud@configdefault
-  sudo apt-get remove --purge -y vpncloud
-  sudo rm -rf /etc/vpncloud
-  echo "VPNCloud removed completely."
+    for service in $(systemctl list-units --type=service | grep 'vpncloud@' | awk '{print $1}'); do
+        echo "Stopping $service..."
+        sudo systemctl stop $service
+        sudo systemctl disable $service
+    done
+    sudo apt-get remove --purge -y vpncloud
+    sudo rm -rf /etc/vpncloud
+    echo "VPNCloud removed completely."
 }
 
 while true; do
