@@ -3,20 +3,22 @@
 CONFIG_FILE="/etc/vpncloud/expert.net"
 
 Install_vpncloud() {
-  echo "deb https://repo.ddswd.de/deb stable main" | sudo tee /etc/apt/sources.list.d/vpncloud.list
-  wget https://repo.ddswd.de/deb/public.key -qO - | sudo apt-key add
-  sudo apt update
-  sudo apt install vpncloud
+    echo "deb https://repo.ddswd.de/deb stable main" | sudo tee /etc/apt/sources.list.d/vpncloud.list
+    wget https://repo.ddswd.de/deb/public.key -qO - | sudo apt-key add
+    sudo apt update
+    sudo apt install vpncloud
 }
 
 setup_vpncloud() {
-  read -p "Node Public IP: " remote_ip
-  if [ -f "$CONFIG_FILE" ]; then
-    sudo sed -i "/^peers:/a\\  - $remote_ip" "$CONFIG_FILE"
-    restart_service
-  else
-    read -p "Private IP e.g 10.0.50.x : " private_ip
-    sudo tee "$CONFIG_FILE" > /dev/null << EOF
+    SERVER_IP=$(hostname -I | awk '{print $1}')
+    echo "Server IP: $SERVER_IP"
+    read -p "Node Public IP: " remote_ip
+    if [ -f "$CONFIG_FILE" ]; then
+        sudo sed -i "/^peers:/a\\  - $remote_ip" "$CONFIG_FILE"
+        restart_service
+    else
+        read -p "Private IP e.g 10.0.50.x : " private_ip
+        sudo tee "$CONFIG_FILE" > /dev/null << EOF
 ---
 device:
   type: tun
@@ -57,14 +59,14 @@ group: ~
 hook: ~
 hooks: {}
 EOF
-      sudo service vpncloud@expert start
-      sudo systemctl enable vpncloud@expert
-      echo "VPNCloud configuration file created at $CONFIG_FILE"
-  fi
+        sudo service vpncloud@expert start
+        sudo systemctl enable vpncloud@expert
+        echo "VPNCloud configuration file created at $CONFIG_FILE"
+    fi
 }
 
 restart_service() {
-  sudo service vpncloud@expert restart
+    sudo service vpncloud@expert restart
 }
 
 remove_vpncloud() {
@@ -79,33 +81,33 @@ remove_vpncloud() {
 }
 
 while true; do
-  echo ""
-  echo "1) Install VPNCloud"
-  echo "2) Connect a node server"
-  echo "3) Restart service"
-  echo "4) Remove Completely"
-  echo "9) Back"
-  read -p "Enter your choice: " choice
+    echo ""
+    echo "1) Install VPNCloud"
+    echo "2) Connect a node server"
+    echo "3) Restart service"
+    echo "4) Remove Completely"
+    echo "9) Back"
+    read -p "Enter your choice: " choice
 
-  case $choice in
+    case $choice in
     1)
-      Install_vpncloud
-      ;;
+        Install_vpncloud
+        ;;
     2)
-      setup_vpncloud
-      ;;
+        setup_vpncloud
+        ;;
     3)
-      restart_service
-      ;;
+        restart_service
+        ;;
     4)
-      remove_vpncloud
-      ;;
+        remove_vpncloud
+        ;;
     9)
-      echo "Exiting..."
-      break
-      ;;
+        echo "Exiting..."
+        break
+        ;;
     *)
-      echo "Invalid option. Please try again."
-      ;;
-  esac
+        echo "Invalid option. Please try again."
+        ;;
+    esac
 done
