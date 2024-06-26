@@ -59,6 +59,7 @@ group: ~
 hook: ~
 hooks: {}
 EOF
+        systemctl daemon-reload
         sudo service vpncloud@expert start
         sudo systemctl enable vpncloud@expert
         echo "VPNCloud configuration file created at $CONFIG_FILE"
