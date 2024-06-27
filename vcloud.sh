@@ -29,7 +29,7 @@ ip: $private_ip
 ifup: ~
 ifdown: ~
 crypto:
-  password: ~
+  password: "12345"
   private-key: ~
   public-key: ~
   trusted-keys: []
