@@ -63,6 +63,9 @@ EOF
         sudo service vpncloud@expert start
         sudo systemctl enable vpncloud@expert
         echo "VPNCloud configuration file created at $CONFIG_FILE"
+        echo "Your Server IP: $SERVER_IP"
+        echo "Your Server VPNCloud IP: $private_ip"
+        read -p "Press Enter To Continue"
     fi
 }
 
