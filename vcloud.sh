@@ -59,14 +59,15 @@ group: ~
 hook: ~
 hooks: {}
 EOF
-        systemctl daemon-reload
-        sudo service vpncloud@expert start
-        sudo systemctl enable vpncloud@expert
-        echo "VPNCloud configuration file created at $CONFIG_FILE"
-        echo "This Server IP: $SERVER_IP"
-        echo "This Server VPNCloud IP: $private_ip"
-        read -p "Press Enter To Continue"
     fi
+    systemctl daemon-reload
+    sudo service vpncloud@expert start
+    sudo systemctl enable vpncloud@expert
+    echo "VPNCloud configuration file created at $CONFIG_FILE"
+    echo "This Server IP: $SERVER_IP"
+    echo "This Server VPNCloud IP: $private_ip"
+    read -p "Press Enter To Continue"
+
 }
 
 restart_service() {
