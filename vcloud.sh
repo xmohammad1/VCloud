@@ -82,6 +82,7 @@ remove_vpncloud() {
     done
     sudo apt-get remove --purge -y vpncloud
     sudo rm -rf /etc/vpncloud
+    sudo rm -rf /root/vpncloud
     echo "VPNCloud removed completely."
 }
 
