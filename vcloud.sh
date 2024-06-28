@@ -3,9 +3,10 @@
 CONFIG_FILE="/etc/vpncloud/expert.net"
 
 Install_vpncloud() {
-    wget https://repo.ddswd.de/deb/public.key -qO - | sudo apt-key add
-    sudo apt update
-    sudo apt install vpncloud
+    mkdir /root/vpncloud
+    cd /root/vpncloud
+    wget https://github.com/dswd/vpncloud/releases/download/v2.3.0/vpncloud_2.3.0_amd64.deb
+    dpkg -i vpncloud_2.3.0_amd64.deb
 }
 
 setup_vpncloud() {
