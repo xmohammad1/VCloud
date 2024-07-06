@@ -12,60 +12,8 @@ Install_vpncloud() {
 setup_vpncloud() {
     SERVER_IP=$(hostname -I | awk '{print $1}')
     echo "Server IP: $SERVER_IP"
-    read -p "Node Public IP: " remote_ip
-    if [ -f "$CONFIG_FILE" ]; then
-        sudo sed -i "/^peers:/a\\  - $remote_ip" "$CONFIG_FILE"
-        restart_service
-    else
-        read -p "Private IP e.g 10.0.50.x : " private_ip
-        sudo tee "$CONFIG_FILE" > /dev/null << EOF
----
-device:
-  type: tun
-  name: vpncloud%d
-  path: ~
-  fix-rp-filter: false
-ip: $private_ip
-ifup: ~
-ifdown: ~
-crypto:
-  password: ""
-  private-key: ~
-  public-key: ~
-  trusted-keys: []
-  algorithms: []
-listen: "3210"
-peers:
-  - $remote_ip
-peer-timeout: 5
-keepalive: 2
-beacon:
-  store: ~
-  load: ~
-  interval: 3600
-  password: ~
-mode: normal
-switch-timeout: 300
-claims: []
-auto-claim: true
-port-forwarding: true
-pid-file: ~
-stats-file: ~
-statsd:
-  server: ~
-  prefix: ~
-user: ~
-group: ~
-hook: ~
-hooks: {}
-EOF
-    fi
+    vpncloud config
     systemctl daemon-reload
-    sudo service vpncloud@expert start
-    sudo systemctl enable vpncloud@expert
-    echo "VPNCloud configuration file created at $CONFIG_FILE"
-    echo "This Server IP: $SERVER_IP"
-    echo "This Server VPNCloud IP: $private_ip"
     read -p "Press Enter To Continue"
 
 }
